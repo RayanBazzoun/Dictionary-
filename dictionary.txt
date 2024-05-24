@@ -1,0 +1,13 @@
+big:large:great:huge#rayan#small#tiny#little
+cheap:why:inexpensive#yarab#expensive
+clean:tidy#dirty
+difficult:hard#easy
+friendly:outgoing#unfriendly
+good:great#bad
+interesting:fascinating#boring
+new:recent#used
+quiet:still#noisy
+rayan:little:tiny:small:rayan#huge#great#large#big
+safe:secure#dangerous
+why:inexpensive:cheap#expensive
+yarab:expensive#inexpensive#why#cheap
