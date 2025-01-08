@@ -60,7 +60,7 @@ Dictionary* parseFile(Dictionary* d)
         cur->antonym = NULL;
 
         int i = 0;
-        while (line[i] != ':' && line[i] != '#') {
+        while (i < line.length() && line[i] != ':' && line[i] != '#') {
             cur->data[i] = line[i];
             i++;
         }
@@ -72,7 +72,7 @@ Dictionary* parseFile(Dictionary* d)
                 sWord* s = new sWord;
                 s->next = NULL;
                 int j = 0;
-                while (line[i] != ':' && line[i] != '#' && line[i] != '\n') {
+                while (i < line.length() && line[i] != ':' && line[i] != '#' && line[i] != '\n') {
                     s->data[j] = line[i];
                     i++; j++;
                 }
@@ -92,6 +92,9 @@ Dictionary* parseFile(Dictionary* d)
                 a->data[j] = '\0';
                 cur->antonym = insertattail(cur->antonym, a->data);
             }
+            else {
+                i++;
+            }
         }
 
         if (d->head == NULL) {
@@ -103,6 +106,7 @@ Dictionary* parseFile(Dictionary* d)
             d->tail = cur;
         }
     }
+    dict.close();
     return d;
 }
 
@@ -376,81 +380,6 @@ Dictionary* addant(Dictionary* d, char antant[30])
     cout << "The word was not found in the dictionary." << endl;
     return d;
 }
-//Dictionary* addant(Dictionary* d, char antant[30])
-//{
-//    // Add the new word to the dictionary using addNewWord
-//    d = addNewWord(d, antant);
-//
-//    char word[30];
-//    cout << "Enter the word you want to add the antonym to" << endl;
-//    cin >> word;
-//
-//    dWord* cur = d->head;
-//    while (cur != NULL)
-//    {
-//        if (strcmp(cur->data, word) == 0)
-//        {
-//            // Find the newly added word
-//            dWord* newword = d->head;
-//            while (newword != NULL && strcmp(newword->data, antant) != 0)
-//            {
-//                newword = newword->next;
-//            }
-//
-//            if (newword == NULL)
-//            {
-//                cout << "The new word was not found in the dictionary." << endl;
-//                return d;
-//            }
-//
-//            // Add the main word as an antonym to the new word
-//            sWord* mainant = new sWord;
-//            strcpy_s(mainant->data, cur->data);
-//            mainant->next = newword->antonym;
-//            newword->antonym = mainant;
-//
-//            // Add the new word as an antonym to the main word
-//            sWord* newant = new sWord;
-//            strcpy_s(newant->data, newword->data);
-//            newant->next = cur->antonym;
-//            cur->antonym = newant;
-//
-//            // Add the synonyms of the main word as antonyms to the new word
-//            sWord* cursyn = cur->synonym;
-//            while (cursyn != NULL)
-//            {
-//                if (strcmp(newword->data, cursyn->data) != 0)
-//                {
-//                    sWord* syn = new sWord;
-//                    strcpy_s(syn->data, cursyn->data);
-//                    syn->next = newword->antonym;
-//                    newword->antonym = syn;
-//                    cursyn = cursyn->next;
-//                }
-//                else {
-//                    cursyn = cursyn->next;
-//                }
-//            }
-//
-//            // Add the antonyms of the main word as synonyms to the new word
-//            sWord* curant = cur->antonym;
-//            while (curant != NULL)
-//            { 
-//                    sWord* ant = new sWord;
-//                    strcpy_s(ant->data, curant->data);
-//                    ant->next = newword->synonym;
-//                    newword->synonym = ant;
-//                    curant = curant->next;
-//            }
-//
-//            return d;
-//        }
-//        cur = cur->next;
-//    }
-//
-//    cout << "The word was not found in the dictionary." << endl;
-//    return d;
-//}
 
 //part 6
 Dictionary* deleteWordsContaining(Dictionary* d)
@@ -699,6 +628,7 @@ int main() {
             char val[30];
             cin >> val;
             dictionary = addNewWord(dictionary, val);
+            writeFile(dictionary);
             break;
         }
         case 2: {
@@ -722,6 +652,7 @@ int main() {
             cout << "Enter a new synonym" << endl;
             cin >> synant;
             dictionary = addsyn(dictionary, synant);
+            writeFile(dictionary);
             break;
         }
         case 7: {
@@ -729,6 +660,7 @@ int main() {
             cout << "Enter a new antonym" << endl;
             cin >> antant;
             dictionary = addant(dictionary, antant);
+            writeFile(dictionary);
             break;
         }
         case 8: {
